@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const RestErrorFormatter = require("../utils/restErrorFormatter");
 
-const tokenAuthenticator = () => {
+const tokenAuthenticator = (req, res, next) => {
     // prendo i valori inviati dall'utente nell'header della request
     // in postman -> headers -> authorization: 'Bearer ' + token
     const authToken = req.headers.authorization;
@@ -41,11 +41,10 @@ const tokenAuthenticator = () => {
             next(errorFormatter); 
         }
         // se il token è valido l'utente non incapperà nel catch
+
         req.user = user;
         next();
     });
 }
 
-module.exports={
-    tokenAuthenticator
-}
+module.exports=tokenAuthenticator;

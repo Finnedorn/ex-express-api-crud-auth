@@ -3,7 +3,8 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 
 const tokenGenerator = (payload, expiresIn = '5m') => {
-    jwt.sign(payload, process.env.JWT_SECRET, {expiresIn});
+    const newToken = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn});
+    return newToken;
 }
 
 const passwordHusher = async(password) => {

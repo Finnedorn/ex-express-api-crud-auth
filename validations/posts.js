@@ -89,6 +89,7 @@ const bodyChecker = {
     },
     custom: {
       options: async (array) => {
+        console.log(array)
         if (array.length === 0) {
           throw new Error("i Tags devono contenere almeno un elemento");
         }
@@ -101,7 +102,7 @@ const bodyChecker = {
         const tagsToFind = await prisma.tag.findMany({
           where: {
             id: {
-              in:array
+              in:array.map(el => parseInt(el))
             }
           },
         });

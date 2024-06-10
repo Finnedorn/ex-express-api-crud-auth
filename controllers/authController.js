@@ -25,15 +25,15 @@ const register = async (req, res, next) => {
 
         const dataForToken = {
             id: user.id,
-            email,
-            name
+            email: user.email,
+            name: user.name
         }
 
         const token = tokenGenerator(dataForToken);
         res.json({
             message: "Registrazione Avvenuta con successo",
-            token,
-            dataForToken,
+            token: token,
+            details: dataForToken
         });
 
     }catch(error){
@@ -76,8 +76,8 @@ const login = async (req, res, next) => {
 
         const dataForToken = {
             id: user.id,
-            email,
-            name
+            email: user.email,
+            name: user.name
         }
 
         const token = tokenGenerator(dataForToken);

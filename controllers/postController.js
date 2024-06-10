@@ -5,6 +5,8 @@ const prisma = new PrismaClient();
 const RestErrorFormatter = require("../utils/restErrorFormatter");
 // importo slugify
 const slugify = require("slugify");
+require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 // funzione di creazione di uno slug unique
 const createUniqueSlug = async (title) => {
@@ -23,22 +25,35 @@ const createUniqueSlug = async (title) => {
 
 // funzione di creazione di un elemento in db
 const store = async (req, res, next) => {
-  const { title, content, published, categoryId, tags } = req.body;
+  const { title, content, published, userId, categoryId, tags } = req.body;
   try {
-    // const slug = await createUniqueSlug(title);
-    const post = await prisma.post.create({
-      data: {
-        title,
-        slug: await createUniqueSlug(title),
-        content,
-        published,
-        categoryId,
-        tags: {
-          connect: tags.map((tag) => ({ id: tag })),
-        },
+
+    const storeData = {
+      title,
+      slug: await createUniqueSlug(title),
+      content,
+      published: published === "true" ? true : false,
+      categoryId: parseInt(categoryId),
+      userId: parseInt(userId),
+      tags: {
+        connect: tags.map((tag) => ({id: parseInt(tag)})),
       },
+    }
+
+    if(req.file){
+      storeData.image = `http://localhost:${port}/proPic/${req.file.filename}`;
+    }
+
+    const post = await prisma.post.create({
+      data: storeData
     });
+
+
+
     res.send(`Post creato con successo: ${JSON.stringify(post, null, 2)}`);
+
+
+
   } catch (error) {
     // storo in una const la nuova istanza di RestErrorFormatter contente lo status e il message da me personlizzato
     const errorFormatter = new RestErrorFormatter(
