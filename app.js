@@ -5,10 +5,13 @@ const port = process.env.PORT || 3000;
 const postRouter = require("./router/postsRouter");
 const categoryRouter = require("./router/categoryRouter");
 const tagRouter = require("./router/tagRouter");
+const authRouter = require("./router/authRouter");
 const notFoundFormatter = require("./middlewares/404errorFormatter");
 const allErrorFormatter = require("./middlewares/allErrorFormatter");
 
 app.use(express.json());
+
+app.use("/auth", authRouter);
 
 app.use("/posts", postRouter);
 

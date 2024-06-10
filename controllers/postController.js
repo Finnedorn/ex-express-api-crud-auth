@@ -25,11 +25,11 @@ const createUniqueSlug = async (title) => {
 const store = async (req, res, next) => {
   const { title, content, published, categoryId, tags } = req.body;
   try {
-    const slug = await createUniqueSlug(title);
+    // const slug = await createUniqueSlug(title);
     const post = await prisma.post.create({
       data: {
         title,
-        slug,
+        slug: await createUniqueSlug(title),
         content,
         published,
         categoryId,

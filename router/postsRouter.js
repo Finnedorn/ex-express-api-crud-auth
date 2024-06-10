@@ -3,6 +3,10 @@ const router = express.Router();
 const postsController = require("../controllers/postController");
 const validator = require("../middlewares/validator");
 const { slugChecker, bodyChecker } = require("../validations/posts");
+const tokenAuthenticator = require("../middlewares/tokenAuthenticator");
+
+
+router.use(tokenAuthenticator);
 
 router.post("/", validator(bodyChecker), postsController.store);
 
